@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="content" *ngIf="!addMode">
+        <button class="button" (click)="changeMode()">Додати</button>
+        <h5 class="text-center my-5" *ngIf="!(certificatesService.currentCertificates$ | async)">Немає жодного сертифікату</h5>
+        <div class="d-flex justify-content-center align-items-center mt-5">
+            <tabset [vertical]="true" type="pills" *ngIf="(certificatesService.currentCertificates$ | async)">
+                <tab heading="{{c.commonName}}" *ngFor="let c of certificatesService.currentCertificates$ | async">
+                    <p><strong>Common Name:</strong> {{c.commonName}}</p>
+                    <p><strong>Issuer CN:</strong> {{c.issuerCn}}</p>
+                    <p><strong>Valid From:</strong> {{c.validFrom}}</p>
+                    <p><strong>Valid To:</strong> {{c.validTo}}</p>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+    <div class="content" *ngIf="addMode">
+        <button class="button" (click)="changeMode()">Назад</button>
+        <div id="drop_zone" (drop)="handleDrop($event)" (dragover)="onDragOver($event)" class="drag-container mt-5">
+            <p class="text-center caption">Перетягніть файл сертифікату сюди або</p>
+            <input 
+                type="file" 
+                value="Виберіть через стандартний діалог"
+                (change)="onFileSelected($event)"
+                class="file-input"
+            >
+        </div>
+    </div>
+</div>
